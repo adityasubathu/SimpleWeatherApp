@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Simple Weather</string>
-    <string name="change_city">Change city</string>
+    <string name="change_city">Change City</string>
 
     <!-- Put your own APP ID here -->
     <string name="open_weather_maps_app_id">86f50ae95434c4d7bea2bbd02c388863</string>
