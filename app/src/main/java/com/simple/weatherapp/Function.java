@@ -23,7 +23,7 @@ public class Function {
     private static final String OPEN_WEATHER_MAP_URL =
             "http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric";
 
-    private static final String OPEN_WEATHER_MAP_API = "@id/api_key";
+    private static final String OPEN_WEATHER_MAP_API = "86f50ae95434c4d7bea2bbd02c388863";
 
     public static String setWeatherIcon(int actualId, long sunrise, long sunset){
         int id = actualId / 100;
@@ -66,7 +66,7 @@ public class Function {
         public AsyncResponse delegate = null;//Call back interface
 
         public placeIdTask(AsyncResponse asyncResponse) {
-            delegate = asyncResponse;//Assigning call back interface through constructor
+            delegate = asyncResponse;//Assigning call back interfacethrough constructor
         }
 
         @Override
