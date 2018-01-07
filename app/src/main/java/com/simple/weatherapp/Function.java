@@ -6,10 +6,10 @@ package com.simple.weatherapp;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -18,12 +18,15 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.simple.weatherapp.launcherActivity.location;
+
 public class Function {
 
     private static final String OPEN_WEATHER_MAP_URL =
-            "http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric";
+            "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
 
-    private static final String OPEN_WEATHER_MAP_API = "86f50ae95434c4d7bea2bbd02c388863";
+    public static final String OPEN_WEATHER_MAP_API = launcherActivity.owmKey;;
+
 
     public static String setWeatherIcon(int actualId, long sunrise, long sunset){
         int id = actualId / 100;
@@ -66,7 +69,7 @@ public class Function {
         public AsyncResponse delegate = null;//Call back interface
 
         public placeIdTask(AsyncResponse asyncResponse) {
-            delegate = asyncResponse;//Assigning call back interfacethrough constructor
+            delegate = asyncResponse;//Assigning call back interface through constructor
         }
 
         @Override
@@ -74,7 +77,7 @@ public class Function {
 
             JSONObject jsonWeather = null;
             try {
-                jsonWeather = getWeatherJSON(params[0], params[1]);
+                jsonWeather = getWeatherJSON(location);
             } catch (Exception e) {
                 Log.d("Error", "Cannot process JSON results", e);
             }
@@ -110,9 +113,9 @@ public class Function {
     }
 
 
-    public static JSONObject getWeatherJSON(String lat, String lon){
+    public static JSONObject getWeatherJSON(String location){
         try {
-            URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, lat, lon));
+            URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, location));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
 
