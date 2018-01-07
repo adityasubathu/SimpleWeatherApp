@@ -12,8 +12,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainActivity extends AppCompatActivity {
-    private AdView mAdView;
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
 
@@ -24,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
+        AdView mAdView;
+        FirebaseAnalytics mFirebaseAnalytics;
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        asyncTask.execute(launcherActivity.location); //  asyncTask.execute("Latitude", "Longitude")
+        asyncTask.execute(launcherActivity.location);
 
         MobileAds.initialize(this, "ca-app-pub-8581814417027345~4827575101");
 

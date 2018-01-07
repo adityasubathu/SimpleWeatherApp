@@ -1,12 +1,11 @@
 package com.simple.weatherapp;
 
-/**
+/*
  * Created by Aditya on 20/12/2017.
  */
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +24,7 @@ public class Function {
     private static final String OPEN_WEATHER_MAP_URL =
             "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
 
-    public static final String OPEN_WEATHER_MAP_API = launcherActivity.owmKey;;
+    private static final String OPEN_WEATHER_MAP_API = launcherActivity.owmKey;
 
 
     public static String setWeatherIcon(int actualId, long sunrise, long sunset){
