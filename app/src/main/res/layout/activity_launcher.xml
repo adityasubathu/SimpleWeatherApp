@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3F51B5">
+
+
+    <EditText
+        android:id="@+id/apiKeyField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:hint="OpenWeatherMap API Key"
+        android:inputType="textNoSuggestions|textVisiblePassword"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#999999" />
+
+    <EditText
+        android:id="@+id/locationField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/apiKeyField"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:hint="Location"
+        android:inputType="textCapWords"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#999999" />
+
+    <Button
+        android:id="@+id/enterKeyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locationField"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="32dp"
+        android:onClick="setApiLocation"
+        android:text="Enter" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adViewLauncher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-8581814417027345/1051981621"></com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        asyncTask.execute("30.704600", "76.717900"); //  asyncTask.execute("Latitude", "Longitude")
+        asyncTask.execute(launcherActivity.location); //  asyncTask.execute("Latitude", "Longitude")
 
         MobileAds.initialize(this, "ca-app-pub-8581814417027345~4827575101");
 
