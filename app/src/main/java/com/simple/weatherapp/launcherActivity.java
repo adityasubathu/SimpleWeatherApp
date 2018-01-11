@@ -16,13 +16,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  * Created by Aditya on 07/01/2018.
  */
 
-public class launcherActivity extends AppCompatActivity{
+public class launcherActivity extends AppCompatActivity {
 
     public static String owmKey, location;
     private AdView mAdView;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_launcher);
@@ -34,7 +34,7 @@ public class launcherActivity extends AppCompatActivity{
         mAdView.loadAd(adRequest);
     }
 
-    public void setApiLocation(View view){
+    public void setApiLocation(View view) {
         EditText apiKey = (EditText) findViewById(R.id.apiKeyField);
         owmKey = apiKey.getText().toString();
 
