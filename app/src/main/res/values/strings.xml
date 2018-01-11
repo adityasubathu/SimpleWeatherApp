@@ -23,4 +23,6 @@
     <string name="openweathermap_api_key">OpenWeatherMap API Key</string>
     <string name="location">Location</string>
     <string name="enter">Enter</string>
+    <string name="keyIsEmpty">Enter your API Key</string>
+    <string name="locationIsEmpty">Enter Location</string>
 </resources>
