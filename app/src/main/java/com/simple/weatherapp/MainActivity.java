@@ -1,45 +1,53 @@
 package com.simple.weatherapp;
 
 
+//import android.content.Intent;
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.firebase.analytics.FirebaseAnalytics;
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String owmKey, location;
     TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
-
     Typeface weatherFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
-        setContentView(R.layout.activity_main);
+        //getSupportActionBar().hide();
+        if (location.equals("")) {
+            setContentView(R.layout.activity_main);
+        } else {
+            setContentView(R.layout.activity_launcher);
+        }
 
         AdView mAdView;
-        FirebaseAnalytics mFirebaseAnalytics;
+        /*FirebaseAnalytics mFirebaseAnalytics;
 
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);*/
 
 
         weatherFont = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
 
-        cityField = (TextView) findViewById(R.id.city_field);
-        updatedField = (TextView) findViewById(R.id.updated_field);
-        detailsField = (TextView) findViewById(R.id.details_field);
-        currentTemperatureField = (TextView) findViewById(R.id.current_temperature_field);
-        humidity_field = (TextView) findViewById(R.id.humidity_field);
-        pressure_field = (TextView) findViewById(R.id.pressure_field);
-        weatherIcon = (TextView) findViewById(R.id.weather_icon);
+        cityField = findViewById(R.id.city_field);
+        updatedField = findViewById(R.id.updated_field);
+        detailsField = findViewById(R.id.details_field);
+        currentTemperatureField = findViewById(R.id.current_temperature_field);
+        humidity_field = findViewById(R.id.humidity_field);
+        pressure_field = findViewById(R.id.pressure_field);
+        weatherIcon = findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
 
 
@@ -63,6 +71,17 @@ public class MainActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    public void setApiLocation(View view) {
+        EditText apiKey = findViewById(R.id.apiKeyField);
+        owmKey = apiKey.getText().toString();
+
+        EditText loc = findViewById(R.id.locationField);
+        location = loc.getText().toString();
+
+        /*Intent intent = new Intent(launcherActivity.this, MainActivity.class);
+        startActivity(intent);*/
 
 
     }

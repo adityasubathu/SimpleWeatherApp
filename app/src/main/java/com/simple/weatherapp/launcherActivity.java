@@ -9,24 +9,22 @@ import android.widget.EditText;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.analytics.FirebaseAnalytics;
+/*import com.google.firebase.analytics.FirebaseAnalytics;*/
 
 
-/**
+/*
  * Created by Aditya on 07/01/2018.
  */
 
 public class launcherActivity extends AppCompatActivity {
 
     public static String owmKey, location;
-    private AdView mAdView;
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        /*getSupportActionBar().hide();*/
         setContentView(R.layout.activity_launcher);
-
+        AdView mAdView;
         MobileAds.initialize(this, "ca-app-pub-8581814417027345~4827575101");
 
         mAdView = findViewById(R.id.adViewLauncher);
@@ -35,10 +33,10 @@ public class launcherActivity extends AppCompatActivity {
     }
 
     public void setApiLocation(View view) {
-        EditText apiKey = (EditText) findViewById(R.id.apiKeyField);
+        EditText apiKey = findViewById(R.id.apiKeyField);
         owmKey = apiKey.getText().toString();
 
-        EditText loc = (EditText) findViewById(R.id.locationField);
+        EditText loc = findViewById(R.id.locationField);
         location = loc.getText().toString();
 
         Intent intent = new Intent(launcherActivity.this, MainActivity.class);

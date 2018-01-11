@@ -74,8 +74,8 @@ public class Function {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(connection.getInputStream()));
 
-            StringBuffer json = new StringBuffer(1024);
-            String tmp = "";
+            StringBuilder json = new StringBuilder(1024);
+            String tmp;
             while ((tmp = reader.readLine()) != null)
                 json.append(tmp).append("\n");
             reader.close();
@@ -91,6 +91,8 @@ public class Function {
             return data;
         } catch (Exception e) {
             return null;
+
+
         }
     }
 
@@ -131,7 +133,7 @@ public class Function {
 
                     String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
                     String description = details.getString("description").toUpperCase(Locale.US);
-                    String temperature = String.format("%.2f", main.getDouble("temp")) + "°";
+                    String temperature = String.format(String.valueOf(Locale.getDefault()), main.getDouble("temp")) + "°";
                     String humidity = main.getString("humidity") + "%";
                     String pressure = main.getString("pressure") + " hPa";
                     String updatedOn = df.format(new Date(json.getLong("dt") * 1000));
