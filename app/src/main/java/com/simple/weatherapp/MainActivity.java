@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().hide();
-        if (location.equals("")) {
+        if (location.isEmpty()) {
             setContentView(R.layout.activity_main);
         } else {
             setContentView(R.layout.activity_launcher);
