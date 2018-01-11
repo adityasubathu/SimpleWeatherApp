@@ -13,7 +13,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:hint="OpenWeatherMap API Key"
+        android:hint="@string/openweathermap_api_key"
         android:inputType="textNoSuggestions|textVisiblePassword"
         android:singleLine="true"
         android:textColor="#FFFFFF"
@@ -27,7 +27,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:hint="Location"
+        android:hint="@string/location"
         android:inputType="textCapWords"
         android:textColor="#FFFFFF"
         android:textColorHint="#999999" />
@@ -40,7 +40,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="32dp"
         android:onClick="setApiLocation"
-        android:text="Enter" />
+        android:text="@string/enter" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adViewLauncher"
