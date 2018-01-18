@@ -19,11 +19,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.simple.weatherapp.launcherActivity.location;
+import static com.simple.weatherapp.launcherActivity.owmKey;
 
 public class Function {
 
-    private static final String OPEN_WEATHER_MAP_URL =
-            "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
+    private static final String OPEN_WEATHER_MAP_URL = "http://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
 
     private static final String OPEN_WEATHER_MAP_API = launcherActivity.owmKey;
 
@@ -65,19 +65,16 @@ public class Function {
 
     public static JSONObject getWeatherJSON(String location) {
         try {
-            URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, location));
-            HttpURLConnection connection =
-                    (HttpURLConnection) url.openConnection();
+            URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, location, launcherActivity.units, launcherActivity.owmKey));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            connection.addRequestProperty("x-api-key", OPEN_WEATHER_MAP_API);
+            // connection.addRequestProperty("x-api-key", OPEN_WEATHER_MAP_API);
 
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             StringBuilder json = new StringBuilder(1024);
             String tmp;
-            while ((tmp = reader.readLine()) != null)
-                json.append(tmp).append("\n");
+            while ((tmp = reader.readLine()) != null) json.append(tmp).append("\n");
             reader.close();
 
             JSONObject data = new JSONObject(json.toString());
@@ -130,22 +127,22 @@ public class Function {
                     JSONObject main = json.getJSONObject("main");
                     DateFormat df = DateFormat.getDateTimeInstance();
 
+                    String displayURL = String.format(OPEN_WEATHER_MAP_URL, location, launcherActivity.units, launcherActivity.owmKey);
+
 
                     String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
                     String description = details.getString("description").toUpperCase(Locale.US);
-                    String temperature = String.format(String.valueOf(Locale.getDefault()), main.getDouble("temp")) + "°";
+                    String temperature = String.format(String.valueOf(main.getDouble("temp"))) + "°";
                     String humidity = main.getString("humidity") + "%";
                     String pressure = main.getString("pressure") + " hPa";
                     String updatedOn = df.format(new Date(json.getLong("dt") * 1000));
-                    String iconText = setWeatherIcon(details.getInt("id"),
-                            json.getJSONObject("sys").getLong("sunrise") * 1000,
-                            json.getJSONObject("sys").getLong("sunset") * 1000);
+                    String iconText = setWeatherIcon(details.getInt("id"), json.getJSONObject("sys").getLong("sunrise") * 1000, json.getJSONObject("sys").getLong("sunset") * 1000);
 
                     delegate.processFinish(city, description, temperature, humidity, pressure, updatedOn, iconText, "" + (json.getJSONObject("sys").getLong("sunrise") * 1000));
 
                 }
             } catch (JSONException e) {
-                //Log.e(LOG_TAG, "Cannot process JSON results", e);
+                Log.e("A", "Cannot process JSON results");
             }
         }
     }

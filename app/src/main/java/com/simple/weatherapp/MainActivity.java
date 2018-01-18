@@ -3,10 +3,13 @@ package com.simple.weatherapp;
 
 //import android.content.Intent;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -23,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-
-            setContentView(R.layout.activity_launcher);
+        setContentView(R.layout.activity_main);
 
         AdView mAdView;
         /*FirebaseAnalytics mFirebaseAnalytics;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);*/
 
 
-        weatherFont = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
+        weatherFont = Typeface.createFromAsset(getAssets(), "fonts/webfont.ttf");
 
         cityField = findViewById(R.id.city_field);
         updatedField = findViewById(R.id.updated_field);
@@ -66,17 +68,4 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
-
-    /*public void setApiLocation(View view) {
-        EditText apiKey = findViewById(R.id.apiKeyField);
-        owmKey = apiKey.getText().toString();
-
-        EditText loc = findViewById(R.id.locationField);
-        location = loc.getText().toString();
-
-        Intent intent = new Intent(launcherActivity.this, MainActivity.class);
-        startActivity(intent);*/
-
-
-    //}
 }

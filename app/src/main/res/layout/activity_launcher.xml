@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3F51B5">
+    android:background="#ffffff">
 
 
     <EditText
@@ -16,7 +16,6 @@
         android:hint="@string/openweathermap_api_key"
         android:inputType="textNoSuggestions|textVisiblePassword"
         android:singleLine="true"
-        android:textColor="#FFFFFF"
         android:textColorHint="#999999" />
 
     <EditText
@@ -29,14 +28,52 @@
         android:layout_marginTop="32dp"
         android:hint="@string/location"
         android:inputType="textCapWords"
-        android:textColor="#FFFFFF"
         android:textColorHint="#999999" />
+
+    <TextView
+        android:id="@+id/unitsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locationField"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
+        android:text="@string/units"
+        android:textSize="20sp" />
+
+    <RadioGroup
+        android:id="@+id/unitsRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locationField"
+        android:layout_toEndOf="@id/unitsTextView"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/metricRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:checked="true"
+            android:text="@string/metric"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/retardedRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/retarded"
+            android:textSize="16sp" />
+
+    </RadioGroup>
 
     <Button
         android:id="@+id/enterKeyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/locationField"
+        android:layout_below="@id/unitsTextView"
         android:layout_centerInParent="true"
         android:layout_marginTop="32dp"
         android:onClick="setApiLocation"

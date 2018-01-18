@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -12,18 +15,17 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 /*import com.google.firebase.analytics.FirebaseAnalytics;*/
 
-
 /*
  * Created by Aditya on 07/01/2018.
  */
 
 public class launcherActivity extends AppCompatActivity {
 
-    public static String owmKey, location;
+    public static String owmKey, location, units;
+    int unitsID;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_launcher);
         AdView mAdView;
         MobileAds.initialize(this, "ca-app-pub-8581814417027345~4827575101");
@@ -40,22 +42,29 @@ public class launcherActivity extends AppCompatActivity {
         EditText loc = findViewById(R.id.locationField);
         location = loc.getText().toString();
 
-        if (owmKey.equals("")&& location.equals("")) {
-            Toast.makeText(this, "Please enter the API Key and Location. The app won't work without it.", Toast.LENGTH_SHORT).show();
+        RadioGroup unitsGroup = findViewById(R.id.unitsRadioGroup);
+
+        unitsID = unitsGroup.getCheckedRadioButtonId();
+        RadioButton selectedButton = findViewById(unitsID);
+
+
+        String CheckUnits = selectedButton.getText().toString();
+
+        if (CheckUnits.equals("Retarded")) {
+            units = "imperial";
+        } else if (CheckUnits.equals("Metric")) {
+            units = "metric";
         }
 
-        else if (owmKey.equals("")) {
+        if (owmKey.equals("") && location.equals("")) {
+            Toast.makeText(this, "Please enter the API Key and Location. The app won't work without them.", Toast.LENGTH_SHORT).show();
+        } else if (owmKey.equals("")) {
             Toast.makeText(this, "Please enter the API Key.", Toast.LENGTH_SHORT).show();
-        }
-
-        else if (location.equals("")) {
+        } else if (location.equals("")) {
             Toast.makeText(this, "Please enter the Location", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
+        } else {
             Intent intent = new Intent(launcherActivity.this, MainActivity.class);
             startActivity(intent);
-
         }
     }
 

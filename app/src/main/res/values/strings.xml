@@ -17,7 +17,6 @@
 
     <string name="place_not_found">Sorry, no weather data found.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="options">Options</string>
     <string name="item">Edit City</string>
     <string name="openweathermap_api_key">OpenWeatherMap API Key</string>
@@ -25,4 +24,8 @@
     <string name="enter">Enter</string>
     <string name="keyIsEmpty">Enter your API Key</string>
     <string name="locationIsEmpty">Enter Location</string>
+    <string name="units">Units:</string>
+    <string name="metric">Metric</string>
+    <string name="retarded">Retarded</string>
+
 </resources>
