@@ -18,14 +18,9 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.simple.weatherapp.launcherActivity.location;
-import static com.simple.weatherapp.launcherActivity.owmKey;
-
 public class Function {
 
     private static final String OPEN_WEATHER_MAP_URL = "http://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
-
-    private static final String OPEN_WEATHER_MAP_API = launcherActivity.owmKey;
 
 
     public static String setWeatherIcon(int actualId, long sunrise, long sunset) {
@@ -112,7 +107,7 @@ public class Function {
 
             JSONObject jsonWeather = null;
             try {
-                jsonWeather = getWeatherJSON(location);
+                jsonWeather = getWeatherJSON(launcherActivity.location);
             } catch (Exception e) {
                 Log.d("Error", "Cannot process JSON results", e);
             }
@@ -127,12 +122,9 @@ public class Function {
                     JSONObject main = json.getJSONObject("main");
                     DateFormat df = DateFormat.getDateTimeInstance();
 
-                    String displayURL = String.format(OPEN_WEATHER_MAP_URL, location, launcherActivity.units, launcherActivity.owmKey);
-
-
                     String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
                     String description = details.getString("description").toUpperCase(Locale.US);
-                    String temperature = String.format(String.valueOf(main.getDouble("temp"))) + "°";
+                    String temperature = String.valueOf(main.getDouble("temp")) + "°";
                     String humidity = main.getString("humidity") + "%";
                     String pressure = main.getString("pressure") + " hPa";
                     String updatedOn = df.format(new Date(json.getLong("dt") * 1000));
