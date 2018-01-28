@@ -56,9 +56,9 @@ public class launcherActivity extends AppCompatActivity {
         }
 
         if (owmKey.equals("") && location.equals("")) {
-            Toast.makeText(this, "Please enter the API Key and Location. The app won't work without them.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the API Key and Location. The app won't work without them", Toast.LENGTH_SHORT).show();
         } else if (owmKey.equals("")) {
-            Toast.makeText(this, "Please enter the API Key.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the API Key", Toast.LENGTH_SHORT).show();
         } else if (location.equals("")) {
             Toast.makeText(this, "Please enter the Location", Toast.LENGTH_SHORT).show();
         } else {
