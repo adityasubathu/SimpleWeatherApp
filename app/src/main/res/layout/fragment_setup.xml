@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:text="86f50ae95434c4d7bea2bbd02c388863"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/apiKeyField"
         android:layout_marginEnd="32dp"
+        android:text="Noida"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:hint="@string/location"
@@ -76,16 +78,7 @@
         android:layout_below="@id/unitsTextView"
         android:layout_centerInParent="true"
         android:layout_marginTop="32dp"
-        android:onClick="setApiLocation"
         android:text="@string/enter" />
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adViewLauncher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-8581814417027345/1051981621" />
 
 </RelativeLayout>

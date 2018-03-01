@@ -18,12 +18,12 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Function {
+class Function {
 
     private static final String OPEN_WEATHER_MAP_URL = "http://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
 
 
-    public static String setWeatherIcon(int actualId, long sunrise, long sunset) {
+    static String setWeatherIcon(int actualId, long sunrise, long sunset) {
         int id = actualId / 100;
         String icon = "";
         if (actualId == 800) {
@@ -58,9 +58,9 @@ public class Function {
         return icon;
     }
 
-    public static JSONObject getWeatherJSON(String location) {
+    static JSONObject getWeatherJSON(String location) {
         try {
-            URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, location, launcherActivity.units, launcherActivity.owmKey));
+            URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, location, SetupFragment.units, SetupFragment.owmKey));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             // connection.addRequestProperty("x-api-key", OPEN_WEATHER_MAP_API);
@@ -96,10 +96,10 @@ public class Function {
 
     public static class placeIdTask extends AsyncTask<String, Void, JSONObject> {
 
-        public AsyncResponse delegate = null;//Call back interface
+        AsyncResponse delegate;//Call back interface
 
-        public placeIdTask(AsyncResponse asyncResponse) {
-            delegate = asyncResponse;//Assigning call back interface through constructor
+        placeIdTask(AsyncResponse asyncResponse) {
+            delegate = asyncResponse; //Assigning call back interface through constructor
         }
 
         @Override
@@ -107,7 +107,7 @@ public class Function {
 
             JSONObject jsonWeather = null;
             try {
-                jsonWeather = getWeatherJSON(launcherActivity.location);
+                jsonWeather = getWeatherJSON(SetupFragment.location);
             } catch (Exception e) {
                 Log.d("Error", "Cannot process JSON results", e);
             }

@@ -27,5 +27,7 @@
     <string name="units">Units:</string>
     <string name="metric">Metric</string>
     <string name="retarded">Retarded</string>
+    <string name="humidity">Humdity: </string>
+    <string name="pressure">Pressure: </string>
 
 </resources>
