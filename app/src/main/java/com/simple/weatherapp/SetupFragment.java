@@ -14,14 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SetupFragment extends Fragment {
 
-    View v, w;
+    View v;
 
-    public static String owmKey, location, units = "notSet";
+    public static String owmKey, location, units = "metric";
     int unitsID = 0;
 
     @Nullable
@@ -47,9 +46,7 @@ public class SetupFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                w = getLayoutInflater().inflate(R.layout.fragment_setup, null);
-
-                RadioButton selectedButton = w.findViewById(checkedId);
+                RadioButton selectedButton = v.findViewById(checkedId);
                 String CheckUnits = selectedButton.getText().toString();
 
                 if (CheckUnits.equals("Retarded")) {
