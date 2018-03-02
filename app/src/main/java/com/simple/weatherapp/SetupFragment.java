@@ -1,5 +1,6 @@
 package com.simple.weatherapp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,17 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
-
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.AdView;
-//import com.google.android.gms.ads.MobileAds;
 
 public class SetupFragment extends Fragment {
 
-    View v;
+    View v, w;
 
-    public static String owmKey, location, units;
+    public static String owmKey, location, units = "notSet";
     int unitsID = 0;
 
     @Nullable
@@ -43,24 +41,15 @@ public class SetupFragment extends Fragment {
         final EditText loc = v.findViewById(R.id.locationField);
         final RadioGroup unitsGroup = v.findViewById(R.id.unitsRadioGroup);
         unitsID = unitsGroup.getCheckedRadioButtonId();
-        final RadioButton selectedButton = v.findViewById(unitsID);
 
-//        AdView mAdView;
-//        MobileAds.initialize(getActivity(), "ca-app-pub-8581814417027345~4827575101");
-//
-//        mAdView = v.findViewById(R.id.adViewLauncher);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
-
-        Button b = v.findViewById(R.id.enterKeyButton);
-
-        b.setOnClickListener(new View.OnClickListener() {
+        unitsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("InflateParams")
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+                w = getLayoutInflater().inflate(R.layout.fragment_setup, null);
 
-                owmKey = apiKey.getText().toString();
-                location = loc.getText().toString();
+                RadioButton selectedButton = w.findViewById(checkedId);
                 String CheckUnits = selectedButton.getText().toString();
 
                 if (CheckUnits.equals("Retarded")) {
@@ -70,7 +59,20 @@ public class SetupFragment extends Fragment {
                 } else if (CheckUnits.equals("Metric")) {
 
                     units = "metric";
+
                 }
+
+            }
+        });
+
+        Button b = v.findViewById(R.id.enterKeyButton);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                owmKey = apiKey.getText().toString();
+                location = loc.getText().toString();
 
                 if (owmKey.equals("") && location.equals("")) {
 
@@ -91,6 +93,8 @@ public class SetupFragment extends Fragment {
                     FragmentManager fm = getFragmentManager();
                     assert fm != null;
                     FragmentTransaction ft = fm.beginTransaction();
+
+                    ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.slide_out_right, R.anim.slide_in_right, android.R.anim.fade_out);
 
                     ft.replace(R.id.fragmentHolder, weatherDisplayFragment, "weatherDisplayFragment");
                     ft.addToBackStack("SetupFragment");

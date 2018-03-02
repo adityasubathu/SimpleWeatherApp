@@ -1,9 +1,5 @@
 package com.simple.weatherapp;
 
-/*
- * Created by Aditya on 20/12/2017.
- */
-
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -63,8 +59,6 @@ class Function {
             URL url = new URL(String.format(OPEN_WEATHER_MAP_URL, location, SetupFragment.units, SetupFragment.owmKey));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            // connection.addRequestProperty("x-api-key", OPEN_WEATHER_MAP_API);
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             StringBuilder json = new StringBuilder(1024);
@@ -83,8 +77,6 @@ class Function {
             return data;
         } catch (Exception e) {
             return null;
-
-
         }
     }
 
@@ -96,7 +88,7 @@ class Function {
 
     public static class placeIdTask extends AsyncTask<String, Void, JSONObject> {
 
-        AsyncResponse delegate;//Call back interface
+        AsyncResponse delegate; //Call back interface
 
         placeIdTask(AsyncResponse asyncResponse) {
             delegate = asyncResponse; //Assigning call back interface through constructor

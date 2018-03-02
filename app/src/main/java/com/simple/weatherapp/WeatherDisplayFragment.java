@@ -11,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.AdView;
-//import com.google.android.gms.ads.MobileAds;
-
 import java.util.Locale;
 import java.util.Objects;
 
@@ -23,7 +19,7 @@ public class WeatherDisplayFragment extends Fragment {
     View v;
     Typeface weatherFont;
 
-    TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField, unitsField;
+    TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
 
     @Nullable
     @Override
@@ -38,7 +34,6 @@ public class WeatherDisplayFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        AdView mAdView;
 
 
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/webfont.ttf");
@@ -51,7 +46,6 @@ public class WeatherDisplayFragment extends Fragment {
         pressure_field = v.findViewById(R.id.pressure_field);
         weatherIcon = v.findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
-        unitsField = v.findViewById(R.id.units_field);
 
         Function.placeIdTask asyncTask = new Function.placeIdTask(new Function.AsyncResponse() {
             public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
@@ -63,17 +57,9 @@ public class WeatherDisplayFragment extends Fragment {
                 humidity_field.setText(String.format(Locale.ENGLISH, "%s %s", getString(R.string.humidity), weather_humidity));
                 pressure_field.setText(String.format(Locale.ENGLISH, "%s %s", getString(R.string.pressure), weather_pressure));
                 weatherIcon.setText(Html.fromHtml(weather_iconText));
-                unitsField.setText(SetupFragment.units);
-
             }
         });
         asyncTask.execute(SetupFragment.location);
-
-//        MobileAds.initialize(getActivity(), "ca-app-pub-8581814417027345~4827575101");
-//
-//        mAdView = v.findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
     }
 }
 
