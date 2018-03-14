@@ -114,8 +114,8 @@ class Function {
                     JSONObject main = json.getJSONObject("main");
                     DateFormat df = DateFormat.getDateTimeInstance();
 
-                    String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
-                    String description = details.getString("description").toUpperCase(Locale.US);
+                    String city = json.getString("name").toUpperCase(Locale.getDefault()) + ", " + json.getJSONObject("sys").getString("country");
+                    String description = details.getString("description").toUpperCase(Locale.getDefault());
                     String temperature = String.valueOf(main.getDouble("temp")) + "°";
                     String humidity = main.getString("humidity") + "%";
                     String pressure = main.getString("pressure") + " hPa";

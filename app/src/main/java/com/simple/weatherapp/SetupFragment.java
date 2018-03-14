@@ -1,6 +1,8 @@
 package com.simple.weatherapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +17,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import java.util.Objects;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SetupFragment extends Fragment {
 
@@ -40,6 +46,16 @@ public class SetupFragment extends Fragment {
         final EditText loc = v.findViewById(R.id.locationField);
         final RadioGroup unitsGroup = v.findViewById(R.id.unitsRadioGroup);
         unitsID = unitsGroup.getCheckedRadioButtonId();
+
+        SharedPreferences mySharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences("saveKey", Context.MODE_PRIVATE);
+
+        if (mySharedPreferences.contains("owmKey")) {
+
+            Toast.makeText(getContext(), "Key Found", Toast.LENGTH_SHORT).show();
+            String storedOwmKey = mySharedPreferences.getString("owmKey", null);
+            apiKey.setText(storedOwmKey);
+
+        }
 
         unitsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("InflateParams")
@@ -96,6 +112,13 @@ public class SetupFragment extends Fragment {
                     ft.replace(R.id.fragmentHolder, weatherDisplayFragment, "weatherDisplayFragment");
                     ft.addToBackStack("SetupFragment");
                     ft.commit();
+
+                    SharedPreferences mySharedPrefs = Objects.requireNonNull(getActivity()).getSharedPreferences("saveKey", Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = mySharedPrefs.edit();
+
+                    editor.putString("owmKey", SetupFragment.owmKey);
+                    editor.apply();
 
                 }
 
