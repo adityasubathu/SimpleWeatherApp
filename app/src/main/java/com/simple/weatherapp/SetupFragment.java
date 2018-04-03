@@ -1,11 +1,17 @@
 package com.simple.weatherapp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,9 +24,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.util.Objects;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
-import static android.content.Context.MODE_PRIVATE;
+import java.util.List;
+import java.util.Objects;
 
 public class SetupFragment extends Fragment {
 
@@ -42,8 +51,10 @@ public class SetupFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
+
         final EditText apiKey = v.findViewById(R.id.apiKeyField);
-        final EditText loc = v.findViewById(R.id.locationField);
+//        final EditText loc = v.findViewById(R.id.locationField);
         final RadioGroup unitsGroup = v.findViewById(R.id.unitsRadioGroup);
         unitsID = unitsGroup.getCheckedRadioButtonId();
 
@@ -51,7 +62,7 @@ public class SetupFragment extends Fragment {
 
         if (mySharedPreferences.contains("owmKey")) {
 
-            Toast.makeText(getContext(), "Key Found", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Key Found", Toast.LENGTH_SHORT).show();
             String storedOwmKey = mySharedPreferences.getString("owmKey", null);
             apiKey.setText(storedOwmKey);
 
@@ -78,6 +89,43 @@ public class SetupFragment extends Fragment {
             }
         });
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location loc) {
+                // Got last known location. In some rare situations this can be null.
+                if (loc != null) {
+                    List<Address> addressList = null;
+
+                    Geocoder geocoder = new Geocoder(getActivity());
+
+                    try {
+                        double latitude = loc.getLatitude();
+                        double longitude = loc.getLongitude();
+
+                        addressList = geocoder.getFromLocation(latitude, longitude, 1);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Address address = Objects.requireNonNull(addressList).get(0);
+
+                    location = address.getLocality();
+
+                    if (location.isEmpty()) {
+                        Toast.makeText(getActivity(), "Location Undetectable", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+        });
+
+
         Button b = v.findViewById(R.id.enterKeyButton);
 
         b.setOnClickListener(new View.OnClickListener() {
@@ -85,20 +133,14 @@ public class SetupFragment extends Fragment {
             public void onClick(View v) {
 
                 owmKey = apiKey.getText().toString();
-                location = loc.getText().toString();
 
-                if (owmKey.equals("") && location.equals("")) {
-
-                    Toast.makeText(getActivity(), "Please enter the API Key and Location. The app won't work without them", Toast.LENGTH_SHORT).show();
-
-                } else if (owmKey.equals("")) {
+                if (owmKey.equals("")) {
 
                     Toast.makeText(getActivity(), "Please enter the API Key", Toast.LENGTH_SHORT).show();
 
-                } else if (location.equals("")) {
+                } else if (location.isEmpty()) {
 
-                    Toast.makeText(getActivity(), "Please enter the Location", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getActivity(), "Location Undetectable", Toast.LENGTH_SHORT).show();
                 } else {
 
                     WeatherDisplayFragment weatherDisplayFragment = new WeatherDisplayFragment();
