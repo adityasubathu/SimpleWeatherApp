@@ -28,10 +28,6 @@ android:
     #- sys-img-armeabi-v7a-android-17
     
   before_install:
-    - chmod +x gradlew
     - yes | sdkmanager "platforms;android-27"
   script:
-    - git update-index --chmod=+x gradlew
     - ./gradlew build connectedCheck
-  install:
-  - chmod +x gradlew
