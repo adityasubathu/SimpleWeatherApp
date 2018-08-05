@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.List;
 import java.util.Objects;
 
+import static android.content.ContentValues.TAG;
+
 public class SetupFragment extends Fragment {
 
     public static String owmKey, location, units = "metric";
     View v;
+    EditText loc = null;
     int unitsID = 0;
+    boolean PERMISSION_DENIED = false;
+    String UNITS = "";
 
     @Nullable
     @Override
@@ -50,10 +56,8 @@ public class SetupFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
-
         final EditText apiKey = v.findViewById(R.id.apiKeyField);
-        final EditText loc = v.findViewById(R.id.locationField);
+        loc = v.findViewById(R.id.locationField);
         final RadioGroup unitsGroup = v.findViewById(R.id.unitsRadioGroup);
         unitsID = unitsGroup.getCheckedRadioButtonId();
 
@@ -87,29 +91,95 @@ public class SetupFragment extends Fragment {
             }
         });
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
-        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
 
-            loc.setVisibility(View.VISIBLE);
+            setLocation();
 
-            Toast.makeText(getActivity(), "Location Permission Denied. Please Enter a manual location.", Toast.LENGTH_SHORT).show();
-
-            /*final Intent i = new Intent();
-            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            i.addCategory(Intent.CATEGORY_DEFAULT);
-            i.setData(Uri.parse("package:" + getActivity().getPackageName()));
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            getActivity().startActivity(i);
-
-            Toast.makeText(getActivity(), "App Cannot Work without Location Permission. Please Grant Location Persmission", Toast.LENGTH_SHORT).show();*/
         }
 
+
+        Button b = v.findViewById(R.id.enterKeyButton);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                owmKey = apiKey.getText().toString();
+                if (PERMISSION_DENIED) {
+
+                    location = loc.getText().toString();
+
+                }
+
+                if (owmKey.equals("")) {
+
+                    Toast.makeText(getActivity(), "Please enter the API Key", Toast.LENGTH_SHORT).show();
+
+
+                } else if (location.isEmpty()) {
+
+                    Toast.makeText(getActivity(), "Location Undetectable", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    WeatherDisplayFragment weatherDisplayFragment = new WeatherDisplayFragment();
+
+                    FragmentManager fm = getFragmentManager();
+                    assert fm != null;
+                    FragmentTransaction ft = fm.beginTransaction();
+
+                    ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.slide_out_right, R.anim.slide_in_right, android.R.anim.fade_out);
+
+                    ft.replace(R.id.fragmentHolder, weatherDisplayFragment, "weatherDisplayFragment");
+                    ft.addToBackStack("SetupFragment");
+                    ft.commit();
+
+                    SharedPreferences mySharedPrefs = Objects.requireNonNull(getActivity()).getSharedPreferences("saveKey", Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = mySharedPrefs.edit();
+
+                    editor.putString("owmKey", SetupFragment.owmKey);
+                    editor.apply();
+
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 0: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setLocation();
+                    Log.d(TAG, "permission granted");
+                } else {
+
+                    loc.setVisibility(View.VISIBLE);
+                    PERMISSION_DENIED = true;
+
+                    Toast.makeText(getActivity(), "Location Permission Denied. Please Enter a manual location.", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "permission denied");
+                }
+            }
+
+        }
+    }
+
+    public void setLocation() {
+
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+
+        }
         mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location loc) {
@@ -141,47 +211,6 @@ public class SetupFragment extends Fragment {
             }
         });
 
-
-        Button b = v.findViewById(R.id.enterKeyButton);
-
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                owmKey = apiKey.getText().toString();
-
-                if (owmKey.equals("")) {
-
-                    Toast.makeText(getActivity(), "Please enter the API Key", Toast.LENGTH_SHORT).show();
-
-                } else if (location.isEmpty()) {
-
-                    Toast.makeText(getActivity(), "Location Undetectable", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    WeatherDisplayFragment weatherDisplayFragment = new WeatherDisplayFragment();
-
-                    FragmentManager fm = getFragmentManager();
-                    assert fm != null;
-                    FragmentTransaction ft = fm.beginTransaction();
-
-                    ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.slide_out_right, R.anim.slide_in_right, android.R.anim.fade_out);
-
-                    ft.replace(R.id.fragmentHolder, weatherDisplayFragment, "weatherDisplayFragment");
-                    ft.addToBackStack("SetupFragment");
-                    ft.commit();
-
-                    SharedPreferences mySharedPrefs = Objects.requireNonNull(getActivity()).getSharedPreferences("saveKey", Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = mySharedPrefs.edit();
-
-                    editor.putString("owmKey", SetupFragment.owmKey);
-                    editor.apply();
-
-                }
-
-            }
-        });
     }
 }
 
