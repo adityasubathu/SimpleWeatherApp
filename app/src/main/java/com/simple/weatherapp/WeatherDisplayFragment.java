@@ -34,8 +34,6 @@ public class WeatherDisplayFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/webfont.ttf");
 
         cityField = v.findViewById(R.id.city_field);
@@ -48,7 +46,8 @@ public class WeatherDisplayFragment extends Fragment {
         weatherIcon.setTypeface(weatherFont);
 
         Function.placeIdTask asyncTask = new Function.placeIdTask(new Function.AsyncResponse() {
-            public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
+            public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity,
+                                      String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
 
                 cityField.setText(weather_city);
                 updatedField.setText(weather_updatedOn);

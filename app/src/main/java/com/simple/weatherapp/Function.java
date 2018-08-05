@@ -83,7 +83,8 @@ class Function {
 
     public interface AsyncResponse {
 
-        void processFinish(String output1, String output2, String output3, String output4, String output5, String output6, String output7, String output8);
+        void processFinish(String output1, String output2, String output3, String output4,
+                           String output5, String output6, String output7, String output8);
     }
 
     public static class placeIdTask extends AsyncTask<String, Void, JSONObject> {
@@ -97,13 +98,13 @@ class Function {
         @Override
         protected JSONObject doInBackground(String... params) {
 
-            JSONObject jsonWeather = null;
             try {
-                jsonWeather = getWeatherJSON(SetupFragment.location);
+                return getWeatherJSON(SetupFragment.location);
             } catch (Exception e) {
                 Log.d("Error", "Cannot process JSON results", e);
+                return null;
             }
-            return jsonWeather;
+
         }
 
         @Override
@@ -114,15 +115,19 @@ class Function {
                     JSONObject main = json.getJSONObject("main");
                     DateFormat df = DateFormat.getDateTimeInstance();
 
-                    String city = json.getString("name").toUpperCase(Locale.getDefault()) + ", " + json.getJSONObject("sys").getString("country");
+                    String city = json.getString("name").toUpperCase(Locale.getDefault()) + ", " +
+                            json.getJSONObject("sys").getString("country");
+
                     String description = details.getString("description").toUpperCase(Locale.getDefault());
                     String temperature = String.valueOf(main.getDouble("temp")) + "°";
                     String humidity = main.getString("humidity") + "%";
                     String pressure = main.getString("pressure") + " hPa";
                     String updatedOn = df.format(new Date(json.getLong("dt") * 1000));
-                    String iconText = setWeatherIcon(details.getInt("id"), json.getJSONObject("sys").getLong("sunrise") * 1000, json.getJSONObject("sys").getLong("sunset") * 1000);
+                    String iconText = setWeatherIcon(details.getInt("id"), json.getJSONObject("sys").getLong("sunrise")
+                            * 1000, json.getJSONObject("sys").getLong("sunset") * 1000);
 
-                    delegate.processFinish(city, description, temperature, humidity, pressure, updatedOn, iconText, "" + (json.getJSONObject("sys").getLong("sunrise") * 1000));
+                    delegate.processFinish(city, description, temperature, humidity, pressure, updatedOn, iconText, "" +
+                            (json.getJSONObject("sys").getLong("sunrise") * 1000));
 
                 }
             } catch (JSONException e) {

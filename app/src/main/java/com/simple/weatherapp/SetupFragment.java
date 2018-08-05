@@ -33,9 +33,8 @@ import java.util.Objects;
 
 public class SetupFragment extends Fragment {
 
-    View v;
-
     public static String owmKey, location, units = "metric";
+    View v;
     int unitsID = 0;
 
     @Nullable
@@ -54,7 +53,7 @@ public class SetupFragment extends Fragment {
         FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
 
         final EditText apiKey = v.findViewById(R.id.apiKeyField);
-//        final EditText loc = v.findViewById(R.id.locationField);
+        final EditText loc = v.findViewById(R.id.locationField);
         final RadioGroup unitsGroup = v.findViewById(R.id.unitsRadioGroup);
         unitsID = unitsGroup.getCheckedRadioButtonId();
 
@@ -62,7 +61,6 @@ public class SetupFragment extends Fragment {
 
         if (mySharedPreferences.contains("owmKey")) {
 
-//            Toast.makeText(getContext(), "Key Found", Toast.LENGTH_SHORT).show();
             String storedOwmKey = mySharedPreferences.getString("owmKey", null);
             apiKey.setText(storedOwmKey);
 
@@ -89,9 +87,27 @@ public class SetupFragment extends Fragment {
             }
         });
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            return;
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+        } else {
+
+            loc.setVisibility(View.VISIBLE);
+
+            Toast.makeText(getActivity(), "Location Permission Denied. Please Enter a manual location.", Toast.LENGTH_SHORT).show();
+
+            /*final Intent i = new Intent();
+            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            i.addCategory(Intent.CATEGORY_DEFAULT);
+            i.setData(Uri.parse("package:" + getActivity().getPackageName()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            getActivity().startActivity(i);
+
+            Toast.makeText(getActivity(), "App Cannot Work without Location Permission. Please Grant Location Persmission", Toast.LENGTH_SHORT).show();*/
         }
 
         mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
