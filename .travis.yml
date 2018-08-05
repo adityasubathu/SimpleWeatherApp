@@ -32,3 +32,5 @@ android:
   script:
     - git update-index --chmod=+x gradlew
     - ./gradlew build connectedCheck
+  install:
+  - chmod +x gradlew
