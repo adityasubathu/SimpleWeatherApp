@@ -1,4 +1,4 @@
-package com.simple.weatherapp;
+package com.adityasubathu.weatherapp;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;

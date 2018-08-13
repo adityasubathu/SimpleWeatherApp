@@ -1,4 +1,4 @@
-package com.simple.weatherapp;
+package com.adityasubathu.weatherapp;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -45,7 +45,7 @@ public class WeatherDisplayFragment extends Fragment {
         weatherIcon = v.findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
 
-        Function.placeIdTask asyncTask = new Function.placeIdTask(new Function.AsyncResponse() {
+        backgroundProcess asyncTask = new backgroundProcess(new ASyncResponse() {
             public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity,
                                       String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
 
