@@ -41,7 +41,6 @@ public class SetupFragment extends Fragment {
     EditText loc = null;
     int unitsID = 0;
     boolean PERMISSION_DENIED = false;
-    String UNITS = "";
 
     @Nullable
     @Override

@@ -3,7 +3,6 @@
     <string name="change_city">Change City</string>
 
     <!-- Put your own APP ID here -->
-    <string name="open_weather_maps_app_id">86f50ae95434c4d7bea2bbd02c388863</string>
 
     <string name="weather_sunny">&#xf00d;</string>
     <string name="weather_clear_night">&#xf02e;</string>
@@ -26,8 +25,8 @@
     <string name="locationIsEmpty">Enter Location</string>
     <string name="units">Units:</string>
     <string name="metric">Metric</string>
-    <string name="retarded">Retarded</string>
-    <string name="humidity">Humdity: </string>
+    <string name="imperial">Imperial</string>
+    <string name="humidity">Humidity: </string>
     <string name="pressure">Pressure: </string>
 
 </resources>
